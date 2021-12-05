@@ -11,7 +11,7 @@ mongoose.connect('mongodb+srv://ieo:ieo@cluster0.wwc5r.mongodb.net/employees?ret
     useUnifiedTopology: true
 })
 
-
+//list all employees
 app.get('/api/v1/employees', async (req, res) => {
     const employees = await employeeModel.find({});
   
@@ -23,7 +23,7 @@ app.get('/api/v1/employees', async (req, res) => {
     }
   });
 
-  
+ //add employee 
 app.post('/api/v1/employees', async (req, res) => {
     const employee = new employeeModel(req.body);
 
@@ -36,7 +36,7 @@ app.post('/api/v1/employees', async (req, res) => {
     }
 });
 
-
+//view one employee
 app.get('/api/v1/employees/:id', async (req, res) => {
     const employees = await employeeModel.findById(req.params.id);
   
@@ -52,7 +52,7 @@ app.get('/api/v1/employees/:id', async (req, res) => {
 //PUT
 app.put('/api/v1/employee/:id', async (req, res) => {
     try {
-    await employeeModel.findByIdAndUpdate(req.params.id, req.body)
+    await employeeModel.findByIdAndUpdate(req.params.id, req.body, {new: true})
     await employeeModel.save()
     res.send(employee)
     res.status(200).send("Employee resource is updated")
@@ -93,12 +93,19 @@ app.get("/add", async (req, res) => {
         last_name: "Beltran",
         email: "email@email.com"
     }
+    let t = {
+        _id: new mongoose.Types.ObjectId(),
+        first_name: "Clarisse",
+        last_name: "Lecomte",
+        email: "c@c.com"
+    }
 
     //Create employee model object
-    let new_employee1 = new employeeModel(r)
-    let new_employee2 = new employeeModel(s)
+    //let new_employee1 = new employeeModel(r)
+    //let new_employee2 = new employeeModel(s)
+    let new_employee3 = new employeeModel(t)
 
-    try{
+ /*   try{
         await new_employee1.save(r)
         console.log("Employee Record Saved")
         res.status(200).send("Employee Record Saved")
@@ -108,6 +115,14 @@ app.get("/add", async (req, res) => {
     }
     try{
         await new_employee2.save(s)
+        console.log("Employee Record Saved")
+        res.status(200).send("Employee Record Saved")
+    }catch(err){
+        console.log("ERROR: Employee Record Saved: " + err)
+        res.status(500).send(err)
+    }*/
+    try{
+        await new_employee3.save(t)
         console.log("Employee Record Saved")
         res.status(200).send("Employee Record Saved")
     }catch(err){
@@ -123,6 +138,6 @@ app.get("/", (req, res) => {
 
 
 
-app.listen(8089, () => {
-    console.log("Server running at http://localhost:8089/")
+app.listen(9090, () => {
+    console.log("Server running at http://localhost:9090/")
 })
